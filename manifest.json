@@ -1,0 +1,6 @@
+{
+  "name": "app-button",
+  "short_name": "app-button",
+  "start_url": "/",
+  "display": "standalone"
+}

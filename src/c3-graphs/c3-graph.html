@@ -1,0 +1,66 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="stylesheet" href="../../bower_components/c3/c3.css">
+<dom-module id="c3-graph">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <div id="graph"></div>
+  </template>
+	<script src="../../bower_components/d3/d3.js"></script>
+	<script src="../../bower_components/c3/c3.js"></script>
+	<script>
+		Polymer({
+			is: "c3-graph",
+      properties: {
+        points: {
+          type: Array,
+          value: function() {return [1,2,3,4]}
+        },
+        name: {
+          type: String,
+          value: "Grafica"
+        },
+        bar: {
+          type: Boolean,
+          observer: "_barChange"
+        }
+      },
+      _barChange: function(n,o) {
+        if(!this.chart) return
+        if(n) {
+          this.toBar()
+        }else {
+          this.toLinear()
+        }
+      },
+      attached: function() {
+
+        let data = this.points
+            data.unshift(this.name);
+        this.chart = c3.generate({
+              bindto:this.$.graph,
+              data: {
+                  columns: [
+                      data
+                  ]
+              }
+          });
+      },
+      add_point: function(point) {
+        this.points.push(point)
+        this.chart.load({
+          columns: [this.points]
+        })
+      },
+      toBar: function() {
+        this.chart.transform("bar", this.name)
+      },
+      toLinear: function() {
+        this.chart.transform("line", this.name)
+      }
+		})
+	</script>
+</dom-module>
